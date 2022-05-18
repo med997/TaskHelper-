@@ -16,26 +16,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class EncryptionData {
 
     private static final String SHA1_ALGORITHM = "HmacSHA1";
-    public static String getSHAHash(String givenText) {
-        MessageDigest md = null;
-
-        try {
-            md = MessageDigest.getInstance("SHA-256");
-            md.update(givenText.getBytes());
-
-        } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
-            //logger.error(ex);
-        }
-        byte byteData[] = md.digest();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < byteData.length; i++) {
-            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-        }
-        return sb.toString();
-
-    }
-
+     public static final String PASSWORD_KEY = "FCUyZ3PcYJGJFVuAguHcV3mTbYg=";
     /**
      * Computes RFC 2104-compliant HMAC signature.
      * * @param data
@@ -46,11 +27,11 @@ public class EncryptionData {
      * @throws SignatureException when signature generation fails
      */
 
-    public static String calculateRFC2104HMAC(String data, String key) {
+    public static String calculateRFC2104HMAC(String data) {
         String result = null;
         try {
 
-            SecretKeySpec signingKey = new SecretKeySpec(key.getBytes(), SHA1_ALGORITHM);
+            SecretKeySpec signingKey = new SecretKeySpec(PASSWORD_KEY.getBytes(), SHA1_ALGORITHM);
 
             Mac mac = Mac.getInstance(SHA1_ALGORITHM);
             mac.init(signingKey);
